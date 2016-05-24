@@ -16,35 +16,52 @@ public class MainActivity extends AppCompatActivity
     String ip = "192.168.10.101"; //change it to ip of interlayer server
 
     String sendMessage;
-    EditText input = (EditText)findViewById(R.id.input);
+    EditText input;
+
+    Socket socket;
+    PrintWriter writer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        input = (EditText)findViewById(R.id.input);
+
+        initSocket();
     }
 
-    public void onSendClick(View view)
+    void initSocket()
     {
-        Thread sendThread = new Thread(new Runnable()
+        new Thread (new Runnable()
         {
             @Override
             public void run()
             {
                 try
                 {
-                    Socket socket = new Socket(ip, port);
-                    PrintWriter writer = new PrintWriter(socket.getOutputStream());
-                    sendMessage = input.getText().toString();
-                    writer.write(sendMessage);
-                    writer.close();
+                    socket = new Socket(ip, port);
+                    writer = new PrintWriter(socket.getOutputStream());
                 } catch (IOException e)
                 {
                     e.printStackTrace();
                 }
             }
-        });
-        sendThread.run();
+        }).start();
+    }
+
+    public void onSendClick(View view)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                sendMessage = input.getText().toString();
+                writer.write(sendMessage);
+                writer.close();
+            }
+        }).start();
+        initSocket();
     }
 }

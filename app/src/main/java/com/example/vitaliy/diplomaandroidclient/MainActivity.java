@@ -1,13 +1,16 @@
 package com.example.vitaliy.diplomaandroidclient;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
@@ -25,14 +28,17 @@ public class MainActivity extends AppCompatActivity
     String sendMessage;
     EditText input;
     TextView temperatureTextView;
+    ImageView imageView;
 
     Socket socket;
     PrintWriter writer;
     ObjectInputStream reader;
 
     Message message;
+    File img;
 
-    Handler h;
+    Handler handlerTemperature;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +47,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         input = (EditText)findViewById(R.id.input);
         temperatureTextView = (TextView)findViewById(R.id.temperature);
-        h = new Handler()
+        imageView = (ImageView)findViewById(R.id.imageView);
+        
+        handlerTemperature = new Handler()
         {
             public void handleMessage(android.os.Message msg)
             {
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity
                 temperatureTextView.setText(Integer.toString(msg.what));
             }
         };
+
+        //imageView.setImageResource(R.drawable.noimage);
 
         initSocket();
         messageListener();
@@ -105,9 +115,10 @@ public class MainActivity extends AppCompatActivity
                         {
                             message = (Message) reader.readObject();
                             //temperatureTextView.setText((int) message.getTemperature());
-                            Log.d("DEBUGGG", "recieved temp="+message.getTemperature());
-                            h.sendEmptyMessage((int)message.getTemperature());
-                            //h.sendEmptyMessage(Integer.parseInt(Float.toString(message.getTemperature())));
+                            Log.d("DEBUGGG", "recieved temp=" + message.getTemperature());
+                            handlerTemperature.sendEmptyMessage((int) message.getTemperature());
+                            img = message.getImage();
+                            Log.d("DEBUGGG", "recieved image and not crashed");
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         } catch (OptionalDataException e) {

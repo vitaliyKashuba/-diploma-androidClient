@@ -1,7 +1,9 @@
 package com.example.vitaliy.diplomaandroidclient;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity
 
     Message message;
 
+    Handler h;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,8 +41,17 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         input = (EditText)findViewById(R.id.input);
         temperatureTextView = (TextView)findViewById(R.id.temperature);
+        h = new Handler()
+        {
+            public void handleMessage(android.os.Message msg)
+            {
+                Log.d("DEBUGGG", "handled");
+                temperatureTextView.setText(Integer.toString(msg.what));
+            }
+        };
 
         initSocket();
+        messageListener();
     }
 
     void initSocket()
@@ -86,17 +99,22 @@ public class MainActivity extends AppCompatActivity
             {
                 while(true)
                 {
-                    try
+                    if(reader!=null)
                     {
-                        message = (Message)reader.readObject();
-                        temperatureTextView.setText((int) message.getTemperature());
-                    }
-                    catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (OptionalDataException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        try
+                        {
+                            message = (Message) reader.readObject();
+                            //temperatureTextView.setText((int) message.getTemperature());
+                            Log.d("DEBUGGG", "recieved temp="+message.getTemperature());
+                            h.sendEmptyMessage((int)message.getTemperature());
+                            //h.sendEmptyMessage(Integer.parseInt(Float.toString(message.getTemperature())));
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (OptionalDataException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

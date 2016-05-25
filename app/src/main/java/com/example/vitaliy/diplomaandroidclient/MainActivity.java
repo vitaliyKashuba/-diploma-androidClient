@@ -135,21 +135,6 @@ public class MainActivity extends AppCompatActivity
         }).start();
     }
 
-    public void onSendClick(View view)
-    {
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                sendMessage = input.getText().toString();
-                writer.write(sendMessage);
-                writer.close();
-            }
-        }).start();
-        initSocket();
-    }
-
     public void messageListener()
     {
         new Thread(new Runnable()
@@ -193,5 +178,40 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).start();
+    }
+
+    public void onSendClick(View view)
+    {
+        sendMessage(input.getText().toString());
+    }
+
+    public void onMoveLeftClick(View view)
+    {
+        sendMessage("moveLeft");
+    }
+
+    public void onMoveRightClick(View view)
+    {
+        sendMessage("moveRight");
+    }
+
+    public void onTakeShotClick(View view)
+    {
+        sendMessage("takeShot");
+    }
+
+    void sendMessage(String msg)
+    {
+        final String send = msg; //cannot compile without it. magic
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                writer.write(send);
+                writer.close();
+            }
+        }).start();
+        initSocket();
     }
 }

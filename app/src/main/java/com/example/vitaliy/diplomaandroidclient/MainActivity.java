@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     TextView humidityTextView;
     TextView relayStateTextView;
     TextView motionView;
+    TextView lightLevelTextView;
     ImageView imageView;
 
     Socket socket;
@@ -67,11 +68,12 @@ public class MainActivity extends AppCompatActivity
         humidityTextView = (TextView)findViewById(R.id.dataHumidity);
         relayStateTextView = (TextView)findViewById(R.id.dataRelayState);
         motionView = (TextView)findViewById(R.id.dataMotionDetect);
+        lightLevelTextView = (TextView)findViewById(R.id.dataLightLevel);
         imageView = (ImageView)findViewById(R.id.imageView);
         //imageView.setImageBitmap( imageUtil.getImageBitmap() );
 
 
-        handlerTemperature = new Handler()
+        /*handlerTemperature = new Handler()
         {
             public void handleMessage(android.os.Message msg)
             {
@@ -81,13 +83,28 @@ public class MainActivity extends AppCompatActivity
 
                 imageView.setImageBitmap(bitmap);
             }
-        };
+        };*/ //become useless?
 
         handler = new Handler()
         {
             @Override
-            public void handleMessage(android.os.Message msg) {
-                super.handleMessage(msg);
+            public void handleMessage(android.os.Message msg)
+            {
+                //super.handleMessage(msg);
+                Message m = (Message)msg.obj;
+                temperatureTextView.setText(Float.toString(m.getTemperature()));
+                humidityTextView.setText(Float.toString(m.getHumidity()));
+                if(m.getRelayStatus()==true)
+                {
+                    relayStateTextView.setText("on");
+                }
+                else
+                {
+                    relayStateTextView.setText("off");
+                }
+                motionView.setText(Boolean.toString(m.getMotionDetected()));
+                lightLevelTextView.setText(Integer.toString(m.getLightLevel()));
+                imageView.setImageBitmap(bitmap);
             }
         };
 
@@ -156,7 +173,10 @@ public class MainActivity extends AppCompatActivity
                             bitmap = BitmapFactory.decodeByteArray(binariedImage, 0, binariedImage.length);
                             Log.d("DEBUGGG", "recieved image and not crashed");
 
-                            handlerTemperature.sendEmptyMessage((int) message.getTemperature());
+                            //handlerTemperature.sendEmptyMessage((int) message.getTemperature());
+                            android.os.Message msg = new android.os.Message();
+                            msg.obj = message;
+                            handler.sendMessage(msg);
                             //outputStream = openFileOutput("cameraimage.png", Context.MODE_PRIVATE);
                             //outputStream.close();
 

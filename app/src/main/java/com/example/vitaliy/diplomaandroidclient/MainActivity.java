@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity
     String sendMessage;
     EditText input;
     TextView temperatureTextView;
+    TextView humidityTextView;
+    TextView relayStateTextView;
+    TextView motionView;
     ImageView imageView;
 
     Socket socket;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     Bitmap bitmap;
 
     Handler handlerTemperature;
+    Handler handler;
 
 
     @Override
@@ -59,7 +63,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         input = (EditText)findViewById(R.id.input);
-        temperatureTextView = (TextView)findViewById(R.id.temperature);
+        temperatureTextView = (TextView)findViewById(R.id.dataTemperature);
+        humidityTextView = (TextView)findViewById(R.id.dataHumidity);
+        relayStateTextView = (TextView)findViewById(R.id.dataRelayState);
+        motionView = (TextView)findViewById(R.id.dataMotionDetect);
         imageView = (ImageView)findViewById(R.id.imageView);
         //imageView.setImageBitmap( imageUtil.getImageBitmap() );
 
@@ -73,6 +80,14 @@ public class MainActivity extends AppCompatActivity
                 //ImageReader r = new ImageReader();
 
                 imageView.setImageBitmap(bitmap);
+            }
+        };
+
+        handler = new Handler()
+        {
+            @Override
+            public void handleMessage(android.os.Message msg) {
+                super.handleMessage(msg);
             }
         };
 

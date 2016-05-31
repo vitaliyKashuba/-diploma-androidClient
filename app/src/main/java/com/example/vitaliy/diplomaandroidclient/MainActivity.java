@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     TextView motionView;
     TextView lightLevelTextView;
     ImageView imageView;
+    Switch switchLight;
+    Switch switchAlarm;
 
     Socket socket;
     PrintWriter writer;
@@ -70,8 +73,11 @@ public class MainActivity extends AppCompatActivity
         motionView = (TextView)findViewById(R.id.dataMotionDetect);
         lightLevelTextView = (TextView)findViewById(R.id.dataLightLevel);
         imageView = (ImageView)findViewById(R.id.imageView);
+        switchLight = (Switch)findViewById(R.id.switchLight);
+        switchAlarm = (Switch)findViewById(R.id.switchArm);
         //imageView.setImageBitmap( imageUtil.getImageBitmap() );
-
+        switchLight.setChecked(false);
+        switchAlarm.setChecked(false);
 
         /*handlerTemperature = new Handler()
         {
@@ -213,5 +219,29 @@ public class MainActivity extends AppCompatActivity
             }
         }).start();
         initSocket();
+    }
+
+    public void onSwitchLightClick(View view)
+    {
+        if(switchLight.isChecked())
+        {
+            sendMessage("lightOn");
+        }
+        else
+        {
+            sendMessage("lightOff");
+        }
+    }
+
+    public void onSwitchAlarmClick(View view)
+    {
+        if(switchAlarm.isChecked())
+        {
+            sendMessage("arm");
+        }
+        else
+        {
+            sendMessage("disarm");
+        }
     }
 }

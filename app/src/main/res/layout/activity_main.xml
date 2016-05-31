@@ -13,18 +13,186 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/input"
-        android:layout_alignParentTop="true"
+        android:text="enter command here"
+        android:layout_alignTop="@+id/buttonSend"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="enter command here" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"
         android:id="@+id/buttonSend"
-        android:layout_below="@+id/input"
+        android:onClick="onSendClick"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/input"
+        android:layout_toEndOf="@+id/input" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:contentDescription="image"
+        android:src="@drawable/noimage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LEFT"
+        android:id="@+id/buttonCameraLeft"
+        android:layout_below="@+id/imageView"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:onClick="onMoveLeftClick" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RIGHT"
+        android:id="@+id/buttonCameraRight"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onMoveRightClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TAKE A SHOT"
+        android:id="@+id/buttonTakeShot"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/buttonCameraLeft"
+        android:layout_alignStart="@+id/buttonCameraLeft"
+        android:layout_below="@+id/buttonCameraLeft"
+        android:onClick="onTakeShotClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Temperature"
+        android:id="@+id/textTemperature"
+        android:layout_alignTop="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="onSendClick" />
+        android:layout_alignBottom="@+id/dataTemperature"
+        android:layout_alignRight="@+id/textMotionDetect"
+        android:layout_alignEnd="@+id/textMotionDetect" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Humidity"
+        android:id="@+id/textHumidity"
+        android:layout_below="@+id/textTemperature"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Relay state"
+        android:id="@+id/textRelayState"
+        android:layout_below="@+id/textHumidity"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Motion detected   "
+        android:id="@+id/textMotionDetect"
+        android:layout_below="@+id/textRelayState"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Light level"
+        android:id="@+id/textLightLevel"
+        android:layout_below="@+id/textMotionDetect"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="null"
+        android:id="@+id/dataTemperature"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toRightOf="@+id/textTemperature"
+        android:layout_toEndOf="@+id/textTemperature" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="null"
+        android:id="@+id/dataHumidity"
+        android:layout_above="@+id/textRelayState"
+        android:layout_alignLeft="@+id/dataTemperature"
+        android:layout_alignStart="@+id/dataTemperature" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="null"
+        android:id="@+id/dataRelayState"
+        android:layout_alignTop="@+id/textRelayState"
+        android:layout_alignLeft="@+id/dataHumidity"
+        android:layout_alignStart="@+id/dataHumidity" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="null"
+        android:id="@+id/dataMotionDetect"
+        android:layout_alignTop="@+id/textMotionDetect"
+        android:layout_alignLeft="@+id/dataRelayState"
+        android:layout_alignStart="@+id/dataRelayState" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="null"
+        android:id="@+id/dataLightLevel"
+        android:layout_below="@+id/dataMotionDetect"
+        android:layout_alignLeft="@+id/dataMotionDetect"
+        android:layout_alignStart="@+id/dataMotionDetect" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Light"
+        android:id="@+id/switchLight"
+        android:onClick="onSwitchLightClick"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/switchArm"
+        android:layout_alignEnd="@+id/switchArm" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alarm state"
+        android:id="@+id/switchArm"
+        android:layout_below="@+id/switchLight"
+        android:layout_alignRight="@+id/buttonTakeShot"
+        android:layout_alignEnd="@+id/buttonTakeShot"
+        android:onClick="onSwitchAlarmClick" />
+
 </RelativeLayout>
